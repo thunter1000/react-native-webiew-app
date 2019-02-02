@@ -1,6 +1,9 @@
 package com.reactnativewebviewapp;
 
 import android.app.Application;
+import android.content.pm.ApplicationInfo;
+import android.os.Build;
+import android.webkit.WebView;
 
 import com.facebook.react.ReactApplication;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
@@ -45,5 +48,10 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      if (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE))
+      { WebView.setWebContentsDebuggingEnabled(true); }
+    }
   }
 }

@@ -1,8 +1,13 @@
 package com.reactnativewebviewapp;
 
 import android.app.Application;
+import android.content.pm.ApplicationInfo;
+import android.os.Build;
+import android.webkit.WebView;
 
 import com.facebook.react.ReactApplication;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -22,7 +27,9 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage()
+          new MainReactPackage(),
+            new ReactNativeConfigPackage(),
+            new RNCWebViewPackage()
       );
     }
 
@@ -41,5 +48,10 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      if (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE))
+      { WebView.setWebContentsDebuggingEnabled(true); }
+    }
   }
 }
